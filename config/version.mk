@@ -27,7 +27,7 @@ ifndef KRACKEN_VERSION_FLAVOR
   # This is the global pa version flavor that determines the focal point
   # behind our releases. This is bundled alongside the $(KRACKEN_VERSION_CODE)
   # and only changes per major Android releases.
-  KRACKEN_VERSION_FLAVOR := Ruby
+  KRACKEN_VERSION_FLAVOR := A11
 endif
 
 ifndef KRACKEN_VERSION_CODE
