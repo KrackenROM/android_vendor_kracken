@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SDCLANG_LTO_DEFS := vendor/pa/sdclang/sdllvm-lto-defs.mk
+SDCLANG_LTO_DEFS := vendor/kracken/sdclang/sdllvm-lto-defs.mk

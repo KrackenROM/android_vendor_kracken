@@ -1,0 +1,26 @@
+[
+    {
+        "remote":       "kracken",
+        "repository":   "android_device_oneplus_oneplus7pro",
+        "target_path":  "device/oneplus/oneplus7pro",
+        "revision":     "A11"
+    },
+    {
+        "remote":       "kracken",
+        "repository":   "android_device_oneplus_sm8150-common",
+        "target_path":  "device/oneplus/sm8150-common",
+        "revision":     "A11"
+    },
+    {
+        "remote":       "kracken",
+        "repository":   "android_kernel_oneplus_sm8150",
+        "target_path":  "kernel/oneplus/sm8150",
+        "revision":     "A11"
+    },
+    {
+        "remote":       "kracken",
+        "repository":   "proprietary_vendor_oneplus",
+        "target_path":  "vendor/oneplus",
+        "revision":     "A11"
+    }
+]

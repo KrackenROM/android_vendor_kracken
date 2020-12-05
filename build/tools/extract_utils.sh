@@ -1630,7 +1630,7 @@ function extract() {
                 fi
                 if [ -a "$DUMPDIR"/"$PARTITION".new.dat ]; then
                     echo "Converting "$PARTITION".new.dat to "$PARTITION".img"
-                    python "$ROOT"/vendor/pa/build/tools/sdat2img.py "$DUMPDIR"/"$PARTITION".transfer.list "$DUMPDIR"/"$PARTITION".new.dat "$DUMPDIR"/"$PARTITION".img 2>&1
+                    python "$ROOT"/vendor/kracken/build/tools/sdat2img.py "$DUMPDIR"/"$PARTITION".transfer.list "$DUMPDIR"/"$PARTITION".new.dat "$DUMPDIR"/"$PARTITION".img 2>&1
                     rm -rf "$DUMPDIR"/"$PARTITION".new.dat "$DUMPDIR"/"$PARTITION"
                     mkdir "$DUMPDIR"/"$PARTITION" "$DUMPDIR"/tmp
                     echo "Requesting sudo access to mount the "$PARTITION".img"

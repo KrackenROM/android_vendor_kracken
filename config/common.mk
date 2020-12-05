@@ -14,7 +14,7 @@
 
 # Android Beam
 PRODUCT_COPY_FILES += \
-    vendor/pa/config/permissions/android.software.nfc.beam.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.nfc.beam.xml
+    vendor/kracken/config/permissions/android.software.nfc.beam.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.nfc.beam.xml
 
 # ART
 # Optimize everything for preopt
@@ -26,30 +26,40 @@ PRODUCT_PROPERTY_OVERRIDES += \
 endif
 
 # Boot Animation
-ifneq ($(TARGET_BOOT_ANIMATION_RES),)
 PRODUCT_COPY_FILES += \
-    vendor/pa/prebuilt/bootanimation/$(TARGET_BOOT_ANIMATION_RES).zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
-endif
+    vendor/kracken/prebuilt/bootanimation/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
 
 # DRM
 ifeq ($(TARGET_SUPPORTS_64_BIT_APPS), true)
 TARGET_ENABLE_MEDIADRM_64 := true
 endif
 
-# Face Sense
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.biometrics.face.xml \
-    vendor/pa/config/permissions/hiddenapi-whitelist-co.aospa.facesense.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/sysconfig/hiddenapi-whitelist-co.aospa.facesense.xml \
-    vendor/pa/config/permissions/privapp-permissions-co.aospa.facesense.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-co.aospa.facesense.xml
-
 # Filesystem
-TARGET_FS_CONFIG_GEN += vendor/pa/config/config.fs
+TARGET_FS_CONFIG_GEN += vendor/kracken/config/config.fs
 
 # GMS
 ifneq ($(TARGET_DISABLES_GMS), true)
 
-# Inherit GMS, Pixel Features, and Modules.
-$(call inherit-product, vendor/google/gms/config.mk)
+# Inherit Gapps.
+GAPPS_VARIANT := nano
+$(call inherit-product, vendor/opengapps/build/opengapps-packages.mk)
+GAPPS_PRODUCT_PACKAGES += \
+		Chrome \
+		PrebuiltBugle \
+		CalculatorGoogle \
+		GoogleContacts \
+		LatinImeGoogle \
+		PrebuiltDeskClockGoogle \
+		WebViewGoogle \
+		CalendarGooglePrebuilt \
+		GoogleDialer
+
+GAPPS_EXCLUDED_PACKAGES := Velvet
+GAPPS_FORCE_PACKAGE_OVERRIDES := true
+GAPPS_FORCE_WEBVIEW_OVERRIDES := true
+GAPPS_FORCE_MMS_OVERRIDES := true
+GAPPS_FORCE_DIALER_OVERRIDES := true
+GAPPS_PACKAGE_OVERRIDES := LatinImeGoogle
 
 # Don't preoptimize prebuilts when building GMS.
 DONT_DEXPREOPT_PREBUILTS := true
@@ -63,43 +73,38 @@ PRODUCT_DEXPREOPT_QUICKEN_APPS += \
 endif #TARGET_DISABLES_GMS
 
 # Overlays
-include vendor/pa/overlay/overlays.mk
+include vendor/kracken/overlay/overlays.mk
 
 # Packages
-include vendor/pa/config/packages.mk
+include vendor/kracken/config/packages.mk
 
 # Properties
-include vendor/pa/config/properties.mk
+include vendor/kracken/config/properties.mk
 
 # Version
-include vendor/pa/config/version.mk
+include vendor/kracken/config/version.mk
 
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.sip.voip.xml \
-    vendor/pa/config/permissions/pa-default-permissions.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/pa-default-permissions.xml \
-    vendor/pa/config/permissions/privapp-permissions-aospa-product.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-aospa.xml \
-    vendor/pa/config/permissions/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-qti.xml \
-    vendor/pa/config/permissions/qti_whitelist.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/qti_whitelist.xml
-
-# Pixel Features
-$(call inherit-product, vendor/google/pixel/config.mk)
+    vendor/kracken/config/permissions/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-qti.xml \
+    vendor/kracken/config/permissions/qti_whitelist.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/qti_whitelist.xml
 
 # Include Common Qualcomm Device Tree on Qualcomm Boards
 $(call inherit-product-if-exists, device/qcom/common/common.mk)
 
 # Init
 PRODUCT_PACKAGES += \
-    init.aospa.rc
+    init.kracken.rc
 
 # SECCOMP Extension
-BOARD_SECCOMP_POLICY += vendor/pa/seccomp
+BOARD_SECCOMP_POLICY += vendor/kracken/seccomp
 
 PRODUCT_COPY_FILES += \
-    vendor/pa/seccomp/codec2.software.ext.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/codec2.software.ext.policy \
-    vendor/pa/seccomp/codec2.vendor.ext.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/codec2.vendor.ext.policy \
-    vendor/pa/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
-    vendor/pa/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
+    vendor/kracken/seccomp/codec2.software.ext.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/codec2.software.ext.policy \
+    vendor/kracken/seccomp/codec2.vendor.ext.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/codec2.vendor.ext.policy \
+    vendor/kracken/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
+    vendor/kracken/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 # Skip boot jars check
 SKIP_BOOT_JARS_CHECK := true
@@ -114,7 +119,7 @@ sdclang_already_warned := true
 endif
 else
 # include definitions for SDCLANG
-include vendor/pa/sdclang/sdclang.mk
+include vendor/kracken/sdclang/sdclang.mk
 endif
 
 # Strip the local variable table and the local variable type table to reduce

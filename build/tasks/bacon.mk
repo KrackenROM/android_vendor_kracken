@@ -16,13 +16,13 @@
 # limitations under the License.
 
 # ---------------------
-# PA OTA Update Package
+# KRACKEN OTA Update Package
 # ---------------------
 
-PA_TARGET_PACKAGE := $(PRODUCT_OUT)/pa-$(PA_VERSION).zip
+KRACKEN_TARGET_PACKAGE := $(PRODUCT_OUT)/kracken-$(KRACKEN_VERSION).zip
 
 .PHONY: bacon
 bacon: $(INTERNAL_OTA_PACKAGE_TARGET)
-	$(hide) mv $(INTERNAL_OTA_PACKAGE_TARGET) $(PA_TARGET_PACKAGE)
-	$(hide) md5sum $(PA_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(PA_TARGET_PACKAGE).md5sum
-	@echo "Package Complete: $(PA_TARGET_PACKAGE)" >&2
+	$(hide) mv $(INTERNAL_OTA_PACKAGE_TARGET) $(KRACKEN_TARGET_PACKAGE)
+	$(hide) md5sum $(KRACKEN_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(KRACKEN_TARGET_PACKAGE).md5sum
+	@echo "Package Complete: $(KRACKEN_TARGET_PACKAGE)" >&2

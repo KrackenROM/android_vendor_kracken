@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.aospa.theme.color.scooter">
+    package="com.kracken.theme.color.scooter">
 
     <overlay
         android:category="android.theme.customization.accent_color"

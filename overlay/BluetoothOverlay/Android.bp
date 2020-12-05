@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-prebuilt_etc {
-    name: "init.kracken.rc",
-    src: "init.kracken.rc",
-    sub_dir: "init",
+runtime_resource_overlay {
+    name: "BluetoothOverlay",
+    product_specific: true,
+    sdk_version: "current",
 }

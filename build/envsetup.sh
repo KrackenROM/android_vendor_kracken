@@ -1,4 +1,4 @@
-function __print_aospa_functions_help() {
+function __print_kracken_functions_help() {
 cat <<EOF
 Additional Paranoid Android functions:
 - cout:            Changes directory to out.
@@ -183,5 +183,5 @@ function repolastsync() {
 function repopick()
 {
     T=$(gettop)
-    $T/vendor/pa/build/tools/repopick.py $@
+    $T/vendor/kracken/build/tools/repopick.py $@
 }

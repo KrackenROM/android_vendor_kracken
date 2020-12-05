@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2020 Paranoid Android
+<!-- Copyright (C) 2020 The LineageOS Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,14 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kracken.theme.color.lostinforest">
 
-    <overlay
-        android:category="android.theme.customization.accent_color"
-        android:priority="600"
-        android:targetPackage="android" />
-
-    <application
-        android:label="@string/accent_color_lost_in_forest_overlay" />
-</manifest>
+<permissions>
+    <feature name="vendor.kracken.biometrics.fingerprint.inscreen" />
+</permissions>

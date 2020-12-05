@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PA build helper script
+# KRACKEN build helper script
 
 # red = errors, cyan = warnings, green = confirmations, blue = informational
 # plain for generic text, bold for titles, reset flag at each end of line
@@ -27,7 +27,7 @@ function showHelpAndExit {
         echo -e "${CLR_BLD_BLU}  -c, --clean           Wipe the tree before building${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -i, --installclean    Dirty build - Use 'installclean'${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -r, --repo-sync       Sync before building${CLR_RST}"
-        echo -e "${CLR_BLD_BLU}  -v, --variant         PA variant - Can be dev, alpha, beta or release${CLR_RST}"
+        echo -e "${CLR_BLD_BLU}  -v, --variant         KRACKEN variant - Can be dev, alpha, beta or release${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -t, --build-type      Specify build type${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -j, --jobs            Specify jobs/threads to use${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -m, --module          Build a specific module${CLR_RST}"
@@ -53,7 +53,7 @@ while true; do
         -c|--clean|c|clean) FLAG_CLEAN_BUILD=y;;
         -i|--installclean|i|installclean) FLAG_INSTALLCLEAN_BUILD=y;;
         -r|--repo-sync|r|repo-sync) FLAG_SYNC=y;;
-        -v|--variant|v|variant) PA_VARIANT="$2"; shift;;
+        -v|--variant|v|variant) KRACKEN_VARIANT="$2"; shift;;
         -t|--build-type|t|build-type) BUILD_TYPE="$2"; shift;;
         -j|--jobs|j|jobs) JOBS="$2"; shift;;
         -m|--module|m|module) MODULE="$2"; shift;;
@@ -86,24 +86,24 @@ cd $(dirname $0)
 DIR_ROOT=$(pwd)
 
 # Make sure everything looks sane so far
-if [ ! -d "$DIR_ROOT/vendor/pa" ]; then
+if [ ! -d "$DIR_ROOT/vendor/kracken" ]; then
         echo -e "${CLR_BLD_RED}error: insane root directory ($DIR_ROOT)${CLR_RST}"
         exit 1
 fi
 
-# Setup PA variant if specified
-if [ $PA_VARIANT ]; then
-    PA_VARIANT=`echo $PA_VARIANT |  tr "[:upper:]" "[:lower:]"`
-    if [ "${PA_VARIANT}" = "release" ]; then
-        export PA_BUILDTYPE=RELEASE
-    elif [ "${PA_VARIANT}" = "alpha" ]; then
-        export PA_BUILDTYPE=ALPHA
-    elif [ "${PA_VARIANT}" = "beta" ]; then
-        export PA_BUILDTYPE=BETA
-    elif [ "${PA_VARIANT}" = "dev" ]; then
-        unset PA_BUILDTYPE
+# Setup KRACKEN variant if specified
+if [ $KRACKEN_VARIANT ]; then
+    KRACKEN_VARIANT=`echo $KRACKEN_VARIANT |  tr "[:upper:]" "[:lower:]"`
+    if [ "${KRACKEN_VARIANT}" = "release" ]; then
+        export KRACKEN_BUILDTYPE=RELEASE
+    elif [ "${KRACKEN_VARIANT}" = "alpha" ]; then
+        export KRACKEN_BUILDTYPE=ALPHA
+    elif [ "${KRACKEN_VARIANT}" = "beta" ]; then
+        export KRACKEN_BUILDTYPE=BETA
+    elif [ "${KRACKEN_VARIANT}" = "dev" ]; then
+        unset KRACKEN_BUILDTYPE
     else
-        echo -e "${CLR_BLD_RED} Unknown PA variant - use alpha, beta or release${CLR_RST}"
+        echo -e "${CLR_BLD_RED} Unknown KRACKEN variant - use alpha, beta or release${CLR_RST}"
         exit 1
     fi
 fi
@@ -130,8 +130,8 @@ if [ -z "$JOBS" ]; then
 fi
 
 # Grab the build version
-PA_DISPLAY_VERSION="$(cat $DIR_ROOT/vendor/pa/config/version.mk | grep 'PA_VERSION_FLAVOR := *' | sed 's/.*= //') \
-$(cat $DIR_ROOT/vendor/pa/config/version.mk | grep 'PA_VERSION_CODE := *' | sed 's/.*= //')"
+KRACKEN_DISPLAY_VERSION="$(cat $DIR_ROOT/vendor/kracken/config/version.mk | grep 'KRACKEN_VERSION_FLAVOR := *' | sed 's/.*= //') \
+$(cat $DIR_ROOT/vendor/kracken/config/version.mk | grep 'KRACKEN_VERSION_CODE := *' | sed 's/.*= //')"
 
 # Prep for a clean build, if requested so
 if [ "$FLAG_CLEAN_BUILD" = 'y' ]; then
@@ -158,15 +158,15 @@ fi
 TIME_START=$(date +%s.%N)
 
 # Friendly logging to tell the user everything is working fine is always nice
-echo -e "${CLR_BLD_GRN}Building AOSPA $PA_DISPLAY_VERSION for $DEVICE${CLR_RST}"
+echo -e "${CLR_BLD_GRN}Building Kracken $KRACKEN_DISPLAY_VERSION for $DEVICE${CLR_RST}"
 echo -e "${CLR_GRN}Start time: $(date)${CLR_RST}"
 echo -e ""
 
 # Lunch-time!
 echo -e "${CLR_BLD_BLU}Lunching $DEVICE${CLR_RST} ${CLR_CYA}(Including dependencies sync)${CLR_RST}"
 echo -e ""
-PA_VERSION=$(lunch "pa_$DEVICE-$BUILD_TYPE" | grep 'PA_VERSION=*' | sed 's/.*=//')
-lunch "pa_$DEVICE-$BUILD_TYPE"
+KRACKEN_VERSION=$(lunch "kracken_$DEVICE-$BUILD_TYPE" | grep 'KRACKEN_VERSION=*' | sed 's/.*=//')
+lunch "kracken_$DEVICE-$BUILD_TYPE"
 echo -e ""
 
 # Build away!
@@ -186,19 +186,19 @@ elif [ "${KEY_MAPPINGS}" ]; then
     # Generate otapackage if in need of unsigned build
     if [ "$FLAG_BACKUP_UNSIGNED" = 'y' ]; then
         m bacon"$CMD"
-        mv $OUT/pa-${PA_VERSION}.zip $DIR_ROOT/pa-${PA_VERSION}-unsigned.zip
+        mv $OUT/kracken-${KRACKEN_VERSION}.zip $DIR_ROOT/kracken-${KRACKEN_VERSION}-unsigned.zip
     else
         m dist"$CMD"
     fi
     echo -e "${CLR_BLD_BLU}Signing target files apks${CLR_RST}"
     ./build/tools/releasetools/sign_target_files_apks -o -d $KEY_MAPPINGS \
-        out/dist/pa_$DEVICE-target_files-*.zip \
-        pa-$PA_VERSION-signed-target_files.zip
+        out/dist/kracken_$DEVICE-target_files-*.zip \
+        kracken-$KRACKEN_VERSION-signed-target_files.zip
     echo -e "${CLR_BLD_BLU}Generating signed install package${CLR_RST}"
     ./build/tools/releasetools/ota_from_target_files -k $KEY_MAPPINGS/releasekey \
         --block --backup=true ${INCREMENTAL} \
-        pa-$PA_VERSION-signed-target_files.zip \
-        pa-$PA_VERSION.zip
+        kracken-$KRACKEN_VERSION-signed-target_files.zip \
+        kracken-$KRACKEN_VERSION.zip
     if [ "$DELTA_TARGET_FILES" ]; then
         # die if base target doesn't exist
         if [ ! -f "$DELTA_TARGET_FILES" ]; then
@@ -207,18 +207,18 @@ elif [ "${KEY_MAPPINGS}" ]; then
         fi
         ./build/tools/releasetools/ota_from_target_files -k $KEY_MAPPINGS/releasekey \
             --block --backup=true --incremental_from $DELTA_TARGET_FILES \
-            pa-$PA_VERSION-signed-target_files.zip \
-            pa-$PA_VERSION-delta.zip
+            kracken-$KRACKEN_VERSION-signed-target_files.zip \
+            kracken-$KRACKEN_VERSION-delta.zip
     fi
     if [ "$FLAG_IMG_ZIP" = 'y' ]; then
         ./build/tools/releasetools/img_from_target_files \
-            pa-$PA_VERSION-signed-target_files.zip \
-            pa-$PA_VERSION-signed-image.zip
+            kracken-$KRACKEN_VERSION-signed-target_files.zip \
+            kracken-$KRACKEN_VERSION-signed-image.zip
     fi
 # Build rom package
 else
     m bacon"$CMD"
-    ln -sf $OUT/pa-${PA_VERSION}.zip $DIR_ROOT
+    ln -sf $OUT/kracken-${KRACKEN_VERSION}.zip $DIR_ROOT
 fi
 RETVAL=$?
 echo -e ""

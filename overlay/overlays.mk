@@ -26,19 +26,14 @@ PRODUCT_PACKAGES += \
     AccentColorSuperNovaOverlay \
     AccentColorTealOverlay \
     AccentColorTorchRedOverlay \
-    AOSPABluetoothOverlay \
-    AOSPAFrameworksOverlay \
-    AOSPAOverlayStub \
-    AOSPASettingsOverlay \
-    AOSPASettingsProviderOverlay \
-    AOSPASystemUIOverlay \
-    AOSPATelephonyOverlay \
-    AOSPAThemePickerOverlay \
-    FontGoogleSansOverlay \
+    BluetoothOverlay \
+    FrameworksOverlay \
+    SettingsOverlay \
+    SettingsProviderOverlay \
+    SystemUIOverlay \
+    TelephonyOverlay \
+    ThemePickerOverlay \
     NavigationBarModeGesturalOverlayNoPill \
     NavigationBarModeGesturalOverlayNoPillNarrowBack \
     NavigationBarModeGesturalOverlayNoPillWideBack \
     NavigationBarModeGesturalOverlayNoPillExtraWideBack \
-    ParanoidDozeOverlay \
-    ParanoidHubOverlay \
-    ParanoidLauncherOverlay

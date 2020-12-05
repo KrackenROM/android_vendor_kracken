@@ -1,2 +1,2 @@
 # FOD
-vendor.aospa.biometrics.fingerprint.inscreen::IFingerprintInscreen    u:object_r:vendor_fod_hwservice:s0
+vendor.kracken.biometrics.fingerprint.inscreen::IFingerprintInscreen    u:object_r:vendor_fod_hwservice:s0

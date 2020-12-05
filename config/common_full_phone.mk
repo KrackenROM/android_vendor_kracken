@@ -1,3 +1,3 @@
 # Inherit common Paranoid Android stuff.
-$(call inherit-product, vendor/pa/config/common.mk)
-$(call inherit-product, vendor/pa/config/telephony.mk)
+$(call inherit-product, vendor/kracken/config/common.mk)
+$(call inherit-product, vendor/kracken/config/telephony.mk)
